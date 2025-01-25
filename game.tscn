@@ -1,0 +1,198 @@
+[gd_scene load_steps=29 format=3 uid="uid://dodnelja0o63"]
+
+[ext_resource type="Script" uid="uid://bhv3uhu6kkli2" path="res://Game.gd" id="1_80cx4"]
+[ext_resource type="Shader" uid="uid://cb8q8bhxq141l" path="res://flash.tres" id="1_e2o6t"]
+[ext_resource type="Shader" uid="uid://hqprkyxgriss" path="res://curtain.tres" id="2_e8heu"]
+[ext_resource type="Texture2D" uid="uid://dnss0a8oihmh3" path="res://icon.svg" id="2_feb5d"]
+[ext_resource type="Shader" uid="uid://cvc8mon6guppu" path="res://Background.tres" id="3_7jktm"]
+[ext_resource type="Texture2D" uid="uid://cm4iv0wpgiiij" path="res://background.png" id="3_feb5d"]
+[ext_resource type="Texture2D" uid="uid://dckus6it8qdon" path="res://transition.png" id="3_rvswv"]
+[ext_resource type="Texture2D" uid="uid://goxqose54mfr" path="res://lightsource.png" id="3_ryrav"]
+[ext_resource type="Script" uid="uid://b2oqnlhouig68" path="res://player.gd" id="3_vef74"]
+[ext_resource type="Script" uid="uid://cd2cyf2kan1yy" path="res://curtain.gd" id="4_boyg6"]
+[ext_resource type="Script" uid="uid://dfoe8fgdjwmk" path="res://Parallax.gd" id="5_ryrav"]
+[ext_resource type="Texture2D" uid="uid://bb3uji1xlbtal" path="res://bubble.png" id="6_j5wjh"]
+[ext_resource type="Texture2D" uid="uid://cw01s74ahf6dp" path="res://capsule-sheet.png" id="10_mfdv2"]
+[ext_resource type="Texture2D" uid="uid://7ekmw7gue5rw" path="res://capsule_light.png" id="11_iotsf"]
+[ext_resource type="Script" uid="uid://c3eb5ix0kgjhl" path="res://flickeringLight.gd" id="12_iotsf"]
+[ext_resource type="Texture2D" uid="uid://dn0qmr2g8yic4" path="res://diver.png" id="14_e8heu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e36ub"]
+shader = ExtResource("2_e8heu")
+shader_parameter/TransitionTexture = ExtResource("3_rvswv")
+shader_parameter/value = 19829.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fc0e3"]
+shader = ExtResource("1_e2o6t")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vef74"]
+size = Vector2(30, 30)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
+shader = ExtResource("3_7jktm")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hve3p"]
+size = Vector2(10, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iotsf"]
+shader = ExtResource("1_e2o6t")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iotsf"]
+atlas = ExtResource("10_mfdv2")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lc2xo"]
+atlas = ExtResource("10_mfdv2")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_215e1"]
+atlas = ExtResource("10_mfdv2")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sc4i"]
+atlas = ExtResource("10_mfdv2")
+region = Rect2(30, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80cx4"]
+atlas = ExtResource("10_mfdv2")
+region = Rect2(40, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e8heu"]
+animations = [{
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_iotsf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lc2xo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_215e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sc4i")
+}, {
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_80cx4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sc4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_215e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lc2xo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="Node2D" type="Node2D"]
+clip_children = 1
+texture_filter = 1
+script = ExtResource("1_80cx4")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Curtain" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_e36ub")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("4_boyg6")
+speed = 2.0
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+editor_only = true
+energy = 0.25
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_fc0e3")
+position = Vector2(58, -37)
+texture = ExtResource("2_feb5d")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Sprite2D2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D2/StaticBody2D"]
+shape = SubResource("RectangleShape2D_vef74")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("3_vef74")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="TextureRect2" type="ColorRect" parent="Player/Camera2D"]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 160.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Player/Camera2D"]
+z_index = -1
+material = SubResource("ShaderMaterial_eow3j")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 160.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_feb5d")
+stretch_mode = 1
+script = ExtResource("5_ryrav")
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+blend_mode = 2
+texture = ExtResource("3_ryrav")
+
+[node name="Bubbles" type="CPUParticles2D" parent="Player"]
+texture = ExtResource("6_j5wjh")
+lifetime = 5.0
+randomness = 0.47
+lifetime_randomness = 0.54
+emission_shape = 3
+emission_rect_extents = Vector2(3, 3)
+spread = 180.0
+gravity = Vector2(0, -10)
+initial_velocity_max = 5.0
+damping_min = 1.0
+damping_max = 2.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+position = Vector2(0, 1)
+texture = ExtResource("14_e8heu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_hve3p")
+
+[node name="Capsule" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_iotsf")
+position = Vector2(132, 0)
+sprite_frames = SubResource("SpriteFrames_e8heu")
+autoplay = "default"
+frame_progress = 0.450691
+
+[node name="PointLight2D2" type="PointLight2D" parent="Capsule"]
+energy = 1.51079
+blend_mode = 2
+texture = ExtResource("11_iotsf")
+script = ExtResource("12_iotsf")

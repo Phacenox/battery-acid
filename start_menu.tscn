@@ -1,0 +1,95 @@
+[gd_scene load_steps=10 format=3 uid="uid://cdkr1v75me7uu"]
+
+[ext_resource type="Shader" uid="uid://0gicxtu328p4" path="res://start_menu_scroller.tres" id="1_ia0g5"]
+[ext_resource type="Script" uid="uid://boalqhxnq0nfu" path="res://start_menu.gd" id="1_v2mkm"]
+[ext_resource type="PackedScene" uid="uid://dodnelja0o63" path="res://game.tscn" id="2_ctwoq"]
+[ext_resource type="Texture2D" uid="uid://dnss0a8oihmh3" path="res://icon.svg" id="2_vpdu5"]
+[ext_resource type="Shader" uid="uid://hqprkyxgriss" path="res://curtain.tres" id="5_ppfnh"]
+[ext_resource type="Script" uid="uid://cd2cyf2kan1yy" path="res://curtain.gd" id="6_7boi2"]
+[ext_resource type="Texture2D" uid="uid://dckus6it8qdon" path="res://transition.png" id="6_pgi0o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2mkm"]
+shader = ExtResource("1_ia0g5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pgi0o"]
+shader = ExtResource("5_ppfnh")
+shader_parameter/TransitionTexture = ExtResource("6_pgi0o")
+shader_parameter/value = -451.292
+
+[node name="StartMenu" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_v2mkm")
+game_scene = ExtResource("2_ctwoq")
+
+[node name="Element1" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_v2mkm")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vpdu5")
+stretch_mode = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -94.0
+offset_right = 100.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="TitleCard" type="TextureRect" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_vpdu5")
+stretch_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ContinueGame" type="Button" parent="VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+disabled = true
+text = "Continue"
+
+[node name="NewGame" type="Button" parent="VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+text = "New Game"
+
+[node name="Quit" type="Button" parent="VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+text = "Quit"
+
+[node name="Curtain" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_pgi0o")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("6_7boi2")
+state = true
+speed = 2.0
+
+[connection signal="pressed" from="VBoxContainer2/VBoxContainer/NewGame" to="." method="start_game"]
