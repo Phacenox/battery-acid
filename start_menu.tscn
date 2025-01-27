@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dodnelja0o63" path="res://game.tscn" id="2_ctwoq"]
 [ext_resource type="Texture2D" uid="uid://dnss0a8oihmh3" path="res://icon.svg" id="2_vpdu5"]
 [ext_resource type="Shader" uid="uid://hqprkyxgriss" path="res://curtain.tres" id="5_ppfnh"]
-[ext_resource type="Script" uid="uid://cd2cyf2kan1yy" path="res://curtain.gd" id="6_7boi2"]
+[ext_resource type="Script" path="res://curtain.gd" id="6_7boi2"]
 [ext_resource type="Texture2D" uid="uid://dckus6it8qdon" path="res://transition.png" id="6_pgi0o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v2mkm"]
@@ -13,8 +13,8 @@ shader = ExtResource("1_ia0g5")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pgi0o"]
 shader = ExtResource("5_ppfnh")
+shader_parameter/value = -5.50683
 shader_parameter/TransitionTexture = ExtResource("6_pgi0o")
-shader_parameter/value = -451.292
 
 [node name="StartMenu" type="ColorRect"]
 anchors_preset = 15

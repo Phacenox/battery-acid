@@ -11,14 +11,15 @@ config_version=5
 [application]
 
 config/name="BigMode25"
-run/main_scene="uid://cdkr1v75me7uu"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+run/main_scene="res://start_menu.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=320
 window/size/viewport_height=240
+window/size/mode=2
 window/stretch/mode="viewport"
 
 [dotnet]

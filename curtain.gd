@@ -18,6 +18,10 @@ var speed : float = 1
 var _state : bool = false
 var state_value = 0
 
+func _ready():
+    open()
+    state_value = 2
+
 func _process(delta):
     (material as ShaderMaterial).set_shader_parameter("value", state_value)
     if(state):
