@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpc2jabd5s2wt"]
+
+[ext_resource type="PackedScene" uid="uid://d1rclt0x4ehbc" path="res://map.tscn" id="1_fm6sh"]
+[ext_resource type="PackedScene" uid="uid://vcq0pv3p3ok8" path="res://enemy_big.tscn" id="2_28u51"]
+
+[node name="map" instance=ExtResource("1_fm6sh")]
+enemy = ExtResource("2_28u51")
+enemy_chance = 0.25
+this_seed = 5628
+
+[node name="Zone" parent="." index="1"]
+sparseness = 2.0
+noise_ratio = 2.0

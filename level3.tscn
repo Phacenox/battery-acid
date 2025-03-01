@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8lpagbj4ujfu"]
+
+[ext_resource type="PackedScene" uid="uid://d1rclt0x4ehbc" path="res://map.tscn" id="1_645rk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1dhea"]
+noise_type = 0
+seed = 5
+frequency = 0.0076
+offset = Vector3(169.49, 305.09, 0)
+fractal_type = 2
+fractal_octaves = 1
+domain_warp_type = 2
+domain_warp_fractal_type = 2
+metadata/_preview_in_3d_space_ = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cschl"]
+seed = 20
+frequency = 0.327
+offset = Vector3(474.58, 203.64, 0)
+fractal_type = 0
+cellular_jitter = 0.0
+
+[node name="map" instance=ExtResource("1_645rk")]
+enemy = null
+
+[node name="Zone" parent="." index="1"]
+noise1 = SubResource("FastNoiseLite_1dhea")
+noise2 = SubResource("FastNoiseLite_cschl")
+sparseness = 0.35
+noise_ratio = 1.8

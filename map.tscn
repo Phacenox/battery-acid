@@ -1,0 +1,113 @@
+[gd_scene load_steps=20 format=4 uid="uid://d1rclt0x4ehbc"]
+
+[ext_resource type="Script" path="res://map.gd" id="1_tbjnr"]
+[ext_resource type="PackedScene" uid="uid://mtsr0qmn0e6v" path="res://enemy.tscn" id="2_m6llf"]
+[ext_resource type="Script" path="res://world.gd" id="3_3l1q5"]
+[ext_resource type="PackedScene" uid="uid://cs520adpku2mo" path="res://orb.tscn" id="3_en7od"]
+[ext_resource type="PackedScene" uid="uid://bhi0clj1orpbv" path="res://broken_wall.tscn" id="4_5uyen"]
+[ext_resource type="Texture2D" uid="uid://cfrkstysr10re" path="res://tiles/tile.png" id="5_ul3tn"]
+[ext_resource type="Texture2D" uid="uid://dowmbk3xc876r" path="res://tiles/tile_overlay.png" id="6_dtxqn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ag87s"]
+noise_type = 0
+seed = 5
+frequency = 0.0058
+offset = Vector3(169.49, 305.09, 0)
+fractal_type = 2
+fractal_octaves = 1
+domain_warp_type = 2
+domain_warp_fractal_type = 2
+metadata/_preview_in_3d_space_ = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cen4l"]
+noise_type = 5
+seed = 20
+frequency = 0.327
+offset = Vector3(474.58, 203.64, 0)
+fractal_type = 0
+cellular_jitter = 0.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_edgjp"]
+noise_type = 0
+frequency = 0.0087
+offset = Vector3(-440.67, 576.27, 0)
+fractal_type = 0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_77lc4"]
+light_mode = 2
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5skeb"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rbx07"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ob7fa"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_vuc5l"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_26hal"]
+texture = ExtResource("5_ul3tn")
+0:0/size_in_atlas = Vector2i(2, 2)
+0:0/0 = 0
+0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_5skeb")
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/size_in_atlas = Vector2i(2, 2)
+2:0/0 = 0
+2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_ob7fa")
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:2/size_in_atlas = Vector2i(2, 2)
+0:2/0 = 0
+0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_rbx07")
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:2/size_in_atlas = Vector2i(2, 2)
+2:2/0 = 0
+2:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_vuc5l")
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:2/size_in_atlas = Vector2i(2, 2)
+4:2/0 = 0
+4:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_jyhj4"]
+occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_26hal")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqq26"]
+texture = ExtResource("6_dtxqn")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jm0iu"]
+sources/0 = SubResource("TileSetAtlasSource_cqq26")
+
+[node name="map" type="Node2D"]
+script = ExtResource("1_tbjnr")
+enemy = ExtResource("2_m6llf")
+orb_packed = ExtResource("3_en7od")
+
+[node name="creatures" type="Node2D" parent="."]
+
+[node name="Zone" type="Node2D" parent="."]
+script = ExtResource("3_3l1q5")
+noise1 = SubResource("FastNoiseLite_ag87s")
+noise2 = SubResource("FastNoiseLite_cen4l")
+noise3 = SubResource("FastNoiseLite_edgjp")
+sparseness = 0.7
+noise_ratio = 0.6
+brokenwall = ExtResource("4_5uyen")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Zone"]
+material = SubResource("CanvasItemMaterial_77lc4")
+tile_map_data = PackedByteArray("AAAAAP//AAAAAAAAAAAAAP7/AAAAAAAAAAABAP7/AAAAAAAAAAABAP3/AAAAAAAAAAAFAP//AAAAAAAAAAAGAP7/AAAAAAAAAAAHAP7/AAAAAAAAAAAHAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAHAP//AAAAAAAAAAAGAP//AAAAAAAAAAAFAP7/AAAAAAAAAAADAAAAAAACAAAAAAACAAAAAAAAAAIAAAA=")
+tile_set = SubResource("TileSet_jyhj4")
+
+[node name="Overlay" type="TileMapLayer" parent="Zone"]
+material = SubResource("CanvasItemMaterial_77lc4")
+tile_map_data = PackedByteArray("AAAFAP//AAAAAAAAAAAFAP7/AAAAAAAAAAAGAP7/AAAAAAAAAAAGAP//AAAAAAAAAAAHAP//AAAAAAAAAAAHAP7/AAAAAAAAAAAHAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAACAAAAAAAAAAEAAAADAAAAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_jm0iu")

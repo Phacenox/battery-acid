@@ -1,0 +1,31 @@
+[gd_scene load_steps=8 format=3 uid="uid://cs520adpku2mo"]
+
+[ext_resource type="Shader" uid="uid://cb8q8bhxq141l" path="res://flash.tres" id="1_jth4l"]
+[ext_resource type="Texture2D" uid="uid://da2n4dhw54wh5" path="res://ui/orb_socket_filled.png" id="2_q760l"]
+[ext_resource type="Script" path="res://orb.gd" id="3_5goqs"]
+[ext_resource type="Texture2D" uid="uid://cm84etwg3frkc" path="res://lights/light_ms.png" id="4_lw1fw"]
+[ext_resource type="Script" path="res://flickeringLight.gd" id="5_6vtv1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iotsf"]
+shader = ExtResource("1_jth4l")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r3y86"]
+radius = 5.09902
+
+[node name="Orb" type="Sprite2D"]
+material = SubResource("ShaderMaterial_iotsf")
+texture = ExtResource("2_q760l")
+script = ExtResource("3_5goqs")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+energy = 2.0665
+blend_mode = 2
+texture = ExtResource("4_lw1fw")
+script = ExtResource("5_6vtv1")
+
+[node name="StaticBody2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_r3y86")
+
+[connection signal="body_entered" from="StaticBody2D" to="." method="_on_body_entered"]

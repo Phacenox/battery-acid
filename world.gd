@@ -13,49 +13,42 @@ var layer1 : TileMapLayer = $TileMapLayer
 var layer2 : TileMapLayer = $Overlay
 
 var r_tile_coords = [Vector2i(0, 0), Vector2i(2, 0), Vector2i(0, 2)]
-const chunk_size = 16
 @export
 var sparseness : float = 1.0
 
 @export
 var noise_ratio = 0.5
 
-@export
-var this_seed = 0
-
 func sample_noise(pos: Vector2i) -> float:
 	var ret =  noise1.get_noise_2d(pos.x * 20, pos.y * 20) * noise_ratio
 	ret += noise2.get_noise_2d(pos.x * 20, pos.y * 20) * (1 - noise_ratio)
 	return (ret + 1)
 
+func clear():
+	layer1.clear()
+	layer2.clear()
 
+enum exits { XPLUS, XMINUS, YPLUS, YMINUS }
 # Called when the node enters the scene tree for the first time.
-var chunk_worldposition = Vector2i(0, 0)
-func _ready():
+func build_chunk_at(start_position, chunk_size: int, this_seed, this_exits, destroy_data: Array[bool]):
 	noise1.seed = this_seed
 	noise2.seed = this_seed + 1
 	noise3.seed = this_seed + 2
-	var rng = RandomNumberGenerator.new()
-	rng.seed = this_seed
-	layer1.clear()
-	layer2.clear()
 	for x in chunk_size:
 		for y in chunk_size:
-			var pos = Vector2i(x, y)
-			if(should_be_solid_edge(pos)):
+			var pos = Vector2i(x, y) + start_position
+			var local_pos = Vector2i(x, y)
+			if(destroy_data[pos.y * 6 * chunk_size + pos.x]): continue
+			if(should_be_solid_edge(local_pos, chunk_size, this_exits)):
 				layer1.set_cell(pos, 0, Vector2i(2, 2))
 				layer2.set_cell(pos, 0, Vector2i(1, 1))
-			elif(sample_noise(pos) < distance_weight_from_center(pos) / sparseness):
+			elif(sample_noise(pos) < distance_weight_from_center(local_pos, chunk_size, this_exits) / sparseness):
 				var tile = floor((noise3.get_noise_2d(pos.x* 20, pos.y* 20) + 1) / 2 * 3) as int % 3
 				layer1.set_cell(pos, 0, r_tile_coords[tile])
 				layer2.set_cell(pos, 0, r_tile_coords[tile] / 2)
-	global_position = chunk_worldposition
-
-enum exits { XPLUS, XMINUS, YPLUS, YMINUS }
-var this_exits = [exits.YPLUS, exits.XMINUS, exits.YMINUS]
 
 const edge_size = 2
-func should_be_solid_edge(sample_position: Vector2i):
+func should_be_solid_edge(sample_position: Vector2i, chunk_size: int, this_exits):
 	if(sample_position.x < edge_size || sample_position.x > chunk_size - edge_size - 1):
 		if(sample_position.y < edge_size || sample_position.y > chunk_size - edge_size - 1):
 			return true
@@ -65,11 +58,11 @@ func should_be_solid_edge(sample_position: Vector2i):
 		return true
 	if(sample_position.y < edge_size && !this_exits.has(exits.YMINUS)):
 		return true
-	if(sample_position.y < chunk_size - edge_size - 1 && !this_exits.has(exits.YPLUS)):
+	if(sample_position.y > chunk_size - edge_size - 1 && !this_exits.has(exits.YPLUS)):
 		return true
 	return false
 
-func distance_weight_from_center(sample_position: Vector2) -> float:
+func distance_weight_from_center(sample_position: Vector2, chunk_size: int, this_exits) -> float:
 	var r = ((sample_position + Vector2.ONE * 0.5) - (Vector2.ONE * chunk_size / 2)) / (chunk_size / 2.0)
 	for item in this_exits:
 		match item:
@@ -86,3 +79,16 @@ func distance_weight_from_center(sample_position: Vector2) -> float:
 				if(r.y < 0):
 					r.y = max(r.x, -abs(r.y))
 	return r.length()
+@export var brokenwall: PackedScene
+func break_tile(body: RID, strength: int):
+	var coords = layer1.get_coords_for_body_rid(body)
+	if(layer1.get_cell_atlas_coords(coords).length() <= strength):
+		var b = brokenwall.instantiate()
+		add_child(b)
+		b.position = layer1.map_to_local(coords)
+		b.atlas_coords = layer1.get_cell_atlas_coords(coords)
+		b.break_block()
+		layer1.set_cell(coords, 0)
+		layer2.set_cell(coords, 0)
+		return coords
+	return false

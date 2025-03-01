@@ -1,0 +1,156 @@
+[gd_scene load_steps=14 format=3 uid="uid://mtsr0qmn0e6v"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_bbf7e"]
+[ext_resource type="Texture2D" uid="uid://7ekmw7gue5rw" path="res://lights/light_s.png" id="2_ilhmu"]
+[ext_resource type="Script" path="res://flickeringLight.gd" id="3_sjlfe"]
+[ext_resource type="Texture2D" uid="uid://b3jddowmrji88" path="res://sprites/worm.png" id="4_k0sab"]
+[ext_resource type="Script" path="res://bugjaws.gd" id="5_yfs01"]
+[ext_resource type="AudioStream" uid="uid://d284ah4h3eqtw" path="res://sounds/brick_hit.wav" id="6_o5831"]
+[ext_resource type="AudioStream" uid="uid://c5mxuunjmkb3n" path="res://sounds/yell.wav" id="7_n156a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nc8rq"]
+radius = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_rxf42"]
+light_mode = 2
+
+[sub_resource type="Curve" id="Curve_lbmcj"]
+min_value = 4.0
+max_value = 90.0
+bake_resolution = 150
+_data = [Vector2(0, 6), 0.0, 0.0463978, 0, 0, Vector2(0.110526, 4), 0.0, 0.0, 0, 0, Vector2(0.147368, 75.0549), 0.0, 0.0, 0, 0, Vector2(0.236842, 51.3187), 0.0, 0.0, 0, 0, Vector2(1, 6.83517), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_x5fb3"]
+min_value = 6.0
+max_value = 60.0
+_data = [Vector2(0, 6), 0.0, 0.0, 0, 0, Vector2(0.278947, 23.1868), 0.0, 0.0, 0, 0, Vector2(0.5, 13.2967), 0.0, 0.0, 0, 0, Vector2(0.784211, 20.989), 0.0, 0.0, 0, 0, Vector2(1, 6), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_25i8u"]
+min_value = 6.0
+max_value = 40.0
+_data = [Vector2(0, 6), 0.0, 0.0, 0, 0, Vector2(0.684211, 33.4066), 0.0, 0.0, 0, 0, Vector2(0.763158, 8.61538), 0.0, 0.0, 0, 0, Vector2(1, 6), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_u25u8"]
+random_pitch = 1.2
+random_volume_offset_db = 0.5
+streams_count = 1
+stream_0/stream = ExtResource("6_o5831")
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("segments") groups=["enemy"]]
+script = ExtResource("1_bbf7e")
+segments = [NodePath("body_0"), NodePath("body_1"), NodePath("body_2"), NodePath("body_3"), NodePath("tail")]
+cruising_speed = 10.0
+cruising_turning = 1.0
+search_speed = 24.0
+search_turning = 3.0
+chasing_speed = 40
+chasing_turning = 4.0
+cruise_distance = 50.0
+accel = 2
+
+[node name="PointLight2D4" type="PointLight2D" parent="."]
+color = Color(1, 0, 1, 1)
+energy = 0.493206
+blend_mode = 2
+texture = ExtResource("2_ilhmu")
+script = ExtResource("3_sjlfe")
+lightenergy = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nc8rq")
+
+[node name="tail" type="Sprite2D" parent="."]
+top_level = true
+z_index = -2
+material = SubResource("CanvasItemMaterial_rxf42")
+position = Vector2(-56, 0)
+texture = ExtResource("4_k0sab")
+offset = Vector2(5, 0)
+hframes = 4
+frame = 2
+
+[node name="body_3" type="Sprite2D" parent="."]
+top_level = true
+z_index = -2
+material = SubResource("CanvasItemMaterial_rxf42")
+position = Vector2(-46, 0)
+texture = ExtResource("4_k0sab")
+offset = Vector2(5, 0)
+hframes = 4
+frame = 1
+
+[node name="body_2" type="Sprite2D" parent="."]
+top_level = true
+z_index = -2
+material = SubResource("CanvasItemMaterial_rxf42")
+position = Vector2(-36, 0)
+texture = ExtResource("4_k0sab")
+offset = Vector2(5, 0)
+hframes = 4
+frame = 1
+
+[node name="body_1" type="Sprite2D" parent="."]
+top_level = true
+z_index = -2
+material = SubResource("CanvasItemMaterial_rxf42")
+position = Vector2(-26, 0)
+texture = ExtResource("4_k0sab")
+offset = Vector2(5, 0)
+hframes = 4
+frame = 1
+
+[node name="body_0" type="Sprite2D" parent="."]
+top_level = true
+z_index = -2
+material = SubResource("CanvasItemMaterial_rxf42")
+position = Vector2(-16, 0)
+texture = ExtResource("4_k0sab")
+offset = Vector2(5, 0)
+hframes = 4
+frame = 1
+
+[node name="head" type="Sprite2D" parent="." node_paths=PackedStringArray("jaw_l", "jaw_r", "worm")]
+z_index = -1
+material = SubResource("CanvasItemMaterial_rxf42")
+texture = ExtResource("4_k0sab")
+hframes = 4
+frame = 3
+script = ExtResource("5_yfs01")
+jaw_l = NodePath("mouth_l")
+jaw_r = NodePath("mouth_r")
+distance_to_player_curve = SubResource("Curve_lbmcj")
+distance_to_player_scale = 80.0
+emote_0 = SubResource("Curve_x5fb3")
+emote_1 = SubResource("Curve_25i8u")
+worm = NodePath("..")
+
+[node name="mouth_l" type="Sprite2D" parent="head"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_rxf42")
+rotation = -0.10472
+texture = ExtResource("4_k0sab")
+offset = Vector2(8, 0)
+flip_v = true
+hframes = 4
+
+[node name="mouth_r" type="Sprite2D" parent="head"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_rxf42")
+rotation = 0.10472
+texture = ExtResource("4_k0sab")
+offset = Vector2(8, 0)
+hframes = 4
+
+[node name="ASM_hurt" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_u25u8")
+volume_db = -5.0
+max_distance = 300.0
+
+[node name="ASM_yell" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_n156a")
+volume_db = -5.0
+pitch_scale = 0.8
+max_distance = 300.0

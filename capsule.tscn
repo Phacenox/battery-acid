@@ -1,0 +1,85 @@
+[gd_scene load_steps=14 format=3 uid="uid://dsijla8thrgy1"]
+
+[ext_resource type="Shader" uid="uid://cb8q8bhxq141l" path="res://flash.tres" id="1_a02nm"]
+[ext_resource type="Texture2D" uid="uid://cw01s74ahf6dp" path="res://sprites/capsule-sheet.png" id="2_gdl1d"]
+[ext_resource type="Script" path="res://capsule.gd" id="3_p2hur"]
+[ext_resource type="Texture2D" uid="uid://7ekmw7gue5rw" path="res://lights/light_s.png" id="4_8wicx"]
+[ext_resource type="Script" path="res://flickeringLight.gd" id="5_4ovxx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iotsf"]
+shader = ExtResource("1_a02nm")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iotsf"]
+atlas = ExtResource("2_gdl1d")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lc2xo"]
+atlas = ExtResource("2_gdl1d")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_215e1"]
+atlas = ExtResource("2_gdl1d")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sc4i"]
+atlas = ExtResource("2_gdl1d")
+region = Rect2(30, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80cx4"]
+atlas = ExtResource("2_gdl1d")
+region = Rect2(40, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e8heu"]
+animations = [{
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_iotsf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lc2xo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_215e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sc4i")
+}, {
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_80cx4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sc4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_215e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lc2xo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r3y86"]
+radius = 5.09902
+
+[node name="Capsule" type="AnimatedSprite2D"]
+material = SubResource("ShaderMaterial_iotsf")
+sprite_frames = SubResource("SpriteFrames_e8heu")
+autoplay = "default"
+frame_progress = 0.450691
+script = ExtResource("3_p2hur")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+energy = 1.92717
+blend_mode = 2
+texture = ExtResource("4_8wicx")
+script = ExtResource("5_4ovxx")
+
+[node name="StaticBody2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_r3y86")
+
+[connection signal="body_entered" from="StaticBody2D" to="." method="_on_body_entered"]

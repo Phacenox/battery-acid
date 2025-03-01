@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="BigMode25"
+config/name="Battery Acid"
 run/main_scene="res://start_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [display]
 
@@ -31,4 +31,7 @@ project/assembly_name="BigMode25"
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=0
+textures/light_projectors/filter=0
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

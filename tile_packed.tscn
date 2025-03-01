@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwb01qk7botwg"]
+
+[ext_resource type="Texture2D" uid="uid://dk5ui6tftayxr" path="res://ui/minimap_sprites.png" id="1_nvije"]
+
+[node name="tile_packed" type="Sprite2D"]
+position = Vector2(24, 18)
+texture = ExtResource("1_nvije")
+hframes = 9
+frame = 1
