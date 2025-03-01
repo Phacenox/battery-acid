@@ -71,10 +71,11 @@ func move(delta):
 			collision.get_collider_shape_index()
 			var layer = collision.get_collider()
 			if layer is TileMapLayer:
-				break_cell(layer, collision.get_collider_rid())
-				forward_v = -max_v
-				boosting = false
-				$ASM_hurt.play()
+				if abs(collision.get_normal().angle_to($pivot.transform.x)) > PI * 0.7:
+					break_cell(layer, collision.get_collider_rid())
+					forward_v = -max_v
+					boosting = false
+					$ASM_hurt.play()
 	if forward_v > wall_max_speed:
 		forward_v = velocity.length() - extra_speed
 	camera.offset += (position - last_position) * 0.0015

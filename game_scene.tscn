@@ -1047,7 +1047,7 @@ frame_progress = 0.00221425
 script = ExtResource("36_fyqv8")
 
 [node name="batterylight" type="PointLight2D" parent="level4/Battery"]
-energy = 2.22985
+energy = 1.81405
 blend_mode = 2
 texture = ExtResource("37_p7ual")
 script = ExtResource("38_7720h")
