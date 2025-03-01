@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=4 uid="uid://dodnelja0o63"]
+[gd_scene load_steps=105 format=4 uid="uid://dodnelja0o63"]
 
 [ext_resource type="Script" path="res://Game.gd" id="1_gt1i4"]
 [ext_resource type="PackedScene" uid="uid://dsijla8thrgy1" path="res://capsule.tscn" id="2_nc5vc"]
@@ -69,6 +69,89 @@
 shader = ExtResource("7_hvpba")
 shader_parameter/value = 3.47824
 shader_parameter/TransitionTexture = ExtResource("8_5i3ry")
+
+[sub_resource type="Animation" id="Animation_j2gf5"]
+resource_name = "Save!"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(247, -0.25, 0, 0.0666667, -11.5, 213, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_d8gwb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(247, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6fx5e"]
+_data = {
+"RESET": SubResource("Animation_d8gwb"),
+"Save!": SubResource("Animation_j2gf5")
+}
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_77lc4"]
 light_mode = 2
@@ -254,13 +337,15 @@ stream = ExtResource("3_emorm")
 volume_db = -8.0
 autoplay = true
 
-[node name="SaveGame" type="Node" parent="." node_paths=PackedStringArray("rest_areas", "levels", "tutorial_orbs") groups=["SaveGame"]]
+[node name="SaveGame" type="Node" parent="." node_paths=PackedStringArray("ui_popup", "rest_areas", "levels", "tutorial_orbs") groups=["SaveGame"]]
 script = ExtResource("3_f401m")
+ui_popup = NodePath("../CanvasLayer/UI/Label/AnimationPlayer")
 rest_areas = [NodePath("../Rest Area"), NodePath("../Rest Area2"), NodePath("../Rest Area3"), NodePath("../Rest Area4")]
 levels = [NodePath("../level1"), NodePath("../level2"), NodePath("../level3")]
 tutorial_orbs = [NodePath("../level0/orbs/Orb"), NodePath("../level0/orbs/Orb4"), NodePath("../level0/orbs/Orb5")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="GameOver" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("curtain")]
 modulate = Color(1, 1, 1, 0)
@@ -337,7 +422,6 @@ layout_mode = 2
 text = "Main Menu"
 
 [node name="Curtain" type="ColorRect" parent="CanvasLayer"]
-visible = false
 z_index = 10
 z_as_relative = false
 material = SubResource("ShaderMaterial_e36ub")
@@ -490,6 +574,23 @@ layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("19_ls5kp")
 stretch_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = 247.0
+offset_right = 327.0
+offset_bottom = 270.0
+theme = ExtResource("4_cyxa7")
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 10
+text = "Saved..."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/UI/Label"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_6fx5e")
+}
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 editor_only = true
@@ -1047,7 +1148,7 @@ frame_progress = 0.00221425
 script = ExtResource("36_fyqv8")
 
 [node name="batterylight" type="PointLight2D" parent="level4/Battery"]
-energy = 1.9868
+energy = 2.02463
 blend_mode = 2
 texture = ExtResource("37_p7ual")
 script = ExtResource("38_7720h")
@@ -1114,7 +1215,7 @@ texture = ExtResource("31_duv2i")
 
 [node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("camera") groups=["Player"]]
 z_index = -1
-position = Vector2(106, -560)
+position = Vector2(98, -552)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("39_0db8u")

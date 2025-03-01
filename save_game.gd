@@ -1,6 +1,8 @@
 extends Node
 
 @export
+var ui_popup: AnimationPlayer
+@export
 var rest_areas: Array[Node2D]
 @export
 var levels: Array[Node2D]
@@ -47,3 +49,4 @@ func save(player_position):
 	var save_data = FileAccess.open("user://savegame.save", FileAccess.WRITE)
 	save_data.store_line(JSON.stringify(data_store))
 	save_data.close()
+	ui_popup.play("Save!")

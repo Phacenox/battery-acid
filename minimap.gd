@@ -40,6 +40,8 @@ func rendermap(data: Array, explored: Array[Vector2i], orbs: Array[Vector2i], pl
 			tile.position = tile_position
 			tile.frame = 6
 	
+	if explored.is_empty():
+		return
 	#exits
 	tile_position = minimap_center.position + (-(player_pos - Vector2i(1, -1)) * tile_size as Vector2);
 	tile = tile_packed.instantiate()
@@ -51,4 +53,3 @@ func rendermap(data: Array, explored: Array[Vector2i], orbs: Array[Vector2i], pl
 	add_child(tile)
 	tile.position = tile_position
 	tile.frame = 8
-	pass
