@@ -6,7 +6,8 @@ var noise1 : FastNoiseLite
 var noise2 : FastNoiseLite
 @export
 var noise3 : FastNoiseLite
-
+@onready
+var layer0 : TileMapLayer = $Background
 @onready
 var layer1 : TileMapLayer = $TileMapLayer
 @onready
@@ -38,6 +39,8 @@ func build_chunk_at(start_position, chunk_size: int, this_seed, this_exits, dest
 		for y in chunk_size:
 			var pos = Vector2i(x, y) + start_position
 			var local_pos = Vector2i(x, y)
+			if(should_be_scaffold(local_pos, this_exits)):
+				layer0.set_cell(pos, 0, scaffold_type(local_pos))
 			if(destroy_data[pos.y * 6 * chunk_size + pos.x]): continue
 			if(should_be_solid_edge(local_pos, chunk_size, this_exits)):
 				layer1.set_cell(pos, 0, Vector2i(2, 2))
@@ -61,6 +64,29 @@ func should_be_solid_edge(sample_position: Vector2i, chunk_size: int, this_exits
 	if(sample_position.y > chunk_size - edge_size - 1 && !this_exits.has(exits.YPLUS)):
 		return true
 	return false
+
+func should_be_scaffold(sample_position: Vector2i, this_exits):
+	if(sample_position.x < 5  && !this_exits.has(exits.XMINUS)):
+		return false
+	if(sample_position.x > 10  && !this_exits.has(exits.XPLUS)):
+		return false
+	if(sample_position.y < 5  && !this_exits.has(exits.YMINUS)):
+		return false
+	if(sample_position.y > 10  && !this_exits.has(exits.YPLUS)):
+		return false
+
+	if(sample_position.x == 6 || sample_position.x == 9):
+		return true
+	if(sample_position.y == 6 || sample_position.y == 9):
+		return true
+	return false
+
+func scaffold_type(sample_position):
+	if(sample_position.x == 6 || sample_position.x == 9):
+		if(sample_position.y == 6 || sample_position.y == 9):
+			return Vector2i(2, 0)
+		return Vector2i(3, 1)
+	return Vector2i(3, 0)
 
 func distance_weight_from_center(sample_position: Vector2, chunk_size: int, this_exits) -> float:
 	var r = ((sample_position + Vector2.ONE * 0.5) - (Vector2.ONE * chunk_size / 2)) / (chunk_size / 2.0)
